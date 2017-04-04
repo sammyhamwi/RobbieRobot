@@ -119,11 +119,14 @@ class Controller
 {
 public:
     int count;
+    string part_types;
     int torso;
     int head;
     int arm;
     int locomotor;
     int battery;
+    double cost;
+    double weight;
 
   Controller (Shop& s, View& view) : shop(s), view(view) { }
 
@@ -148,40 +151,38 @@ public:
  void component(int& i)
  {
     int part_number, model_number, battery_amount, battery_compartment, type, j;
-    string model_name, part_types, description, part_name, temp;
-    double price, battery1_energy, battery2_energy, battery3_energy, locomotor_speed, locomotor_power, arm_power1, arm_power2, cost, weight, model_price, temp2, temp1;
+    string model_name, description, part_name, temp;
+    double price, battery1_energy, battery2_energy, battery3_energy, locomotor_speed, locomotor_power, arm_power1, arm_power2, model_price, temp2, temp1;
 
-    part_types = "";
-    count = 0;
     torso = 0;
     head = 0;
     arm = 0;
     locomotor = 0;
     battery = 0;
-    cost = 0.0;
-    weight = 0.0;
 
     cout << "(1)Torso\n(2)Head\n(3)Arms\n(4)Locomotor\n(5)Battery\nEnter a number, 1 through 5, that indicates the part you are adding: ";
     cin >> type;
+    cin.ignore();
     cout << "Enter a name for the component: ";
-    cin >> part_name;
+    getline (cin,part_name);
+
 
     if (type == 1)
     {
             torso++;
+            cout << "Enter the component's part number: ";
+            cin >> part_number;
             cin.ignore();
             cout << "Enter a description for this component: ";
             getline (cin,temp);
-            cout << "Enter the component's part number: ";
-            cin >> part_number;
             cout << "Enter the component's cost: ";
             cin >> temp2;
             cout << "Enter, from 1 to 3, how many battery compartments this torso has: ";
             cin >> battery_compartment;
             cout << "Enter the components weight: ";
             cin >> temp1;
-            description = "Torso("+std::to_string(part_number)+") Info: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
-            part_types = part_types + " " + description;
+            description = "Torso("+std::to_string(part_number)+") Description: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
+            part_types = part_types + "" + description;
             weight = weight + temp1;
             cost = cost + temp2;
             cout << "\n";
@@ -191,19 +192,19 @@ public:
     if (type == 2)
     {
             head++;
+            cout << "Enter the component's part number: ";
+            cin >> part_number;
             cin.ignore();
             cout << "Enter a description for this component: ";
             getline (cin,temp);
-            cout << "Enter the component's part number: ";
-            cin >> part_number;
             cout << "Enter the components weight: ";
             cin >> temp1;
             cout << "Enter the component's cost: ";
             cin >> temp2;
-            description = "Head("+std::to_string(part_number)+") Info: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
+            description = "Head("+std::to_string(part_number)+") Description: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
             weight = weight + temp1;
             cost = cost + temp2;
-            part_types = part_types + "," + description;
+            part_types = part_types + "" + description;
             cout << "\n";
     }
 
@@ -215,30 +216,30 @@ public:
 
             if (a == 2)
             {
-                arm++;
+                arm++;           
+                cout << "Enter Arm1's part number: ";
+                cin >> part_number;
                 cin.ignore();
                 cout << "Enter a description for Arm1: ";
                 getline (cin,temp);
-                cout << "Enter Arm1's part number: ";
-                cin >> part_number;
                 cout << "Enter the component's cost: ";
                 cin >> temp2;
                 cout << "Enter Arm1's power consumption in watts: ";
                 cin >> arm_power1;
                 cout << "Enter Arm1's weight: ";
                 cin >> temp1;
-                description = "Arm1("+std::to_string(part_number)+") Info: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
+                description = "Arm1("+std::to_string(part_number)+") Description: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
                 weight = weight + temp1;
                 cost = cost + temp2;
-                part_types = part_types + "," + description;
+                part_types = part_types + "" + description;
                 cout << "\n";
 
 
+                cout << "Enter Arm2's part number: ";
+                cin >> part_number;
                 cin.ignore();
                 cout << "Enter a description for Arm2: ";
                 getline (cin,temp);
-                cout << "Enter Arm2's part number: ";
-                cin >> part_number;
                 cout << "Enter the component's cost: ";
                 cin >> temp1;
                 cost = cost + temp1;
@@ -247,21 +248,21 @@ public:
                 cout << "Enter Arm2's weight: ";
                 cin >> temp1;
                 weight = weight + temp1;
-                description = "Arm2("+std::to_string(part_number)+") Info: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
+                description = "Arm2("+std::to_string(part_number)+") Description: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
                 weight = weight + temp1;
                 cost = cost + temp2;
-                part_types = part_types + "," + description;
+                part_types = part_types + "" + description;
                 cout << "\n";
             }
 
             if (a == 1)
             {
                 arm++;
+                cout << "Enter the Arm's part number: ";
+                cin >> part_number;
                 cin.ignore();
                 cout << "Enter a description for this Arm: ";
                 getline (cin,temp);
-                cout << "Enter the Arm's part number: ";
-                cin >> part_number;
                 cout << "Enter the component's cost: ";
                 cin >> temp1;
                 cost = cost + temp1;
@@ -270,10 +271,10 @@ public:
                 cout << "Enter the Arm's weight: ";
                 cin >> temp1;
                 weight = weight + temp1;
-                description = "Arm("+std::to_string(part_number)+") Info: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
+                description = "Arm("+std::to_string(part_number)+") Description: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
                 weight = weight + temp1;
                 cost = cost + temp2;
-                part_types = part_types + "," + description;
+                part_types = part_types + "" + description;
                 cout << "\n";
             }
     }
@@ -281,11 +282,11 @@ public:
     if (type == 4)
     {
             locomotor++;
+            cout << "Enter the component's part number: ";
+            cin >> part_number;
             cin.ignore();
             cout << "Enter a description for this component: ";
             getline (cin,temp);
-            cout << "Enter the component's part number: ";
-            cin >> part_number;
             cout << "Enter the component's cost: ";
             cin >> temp2;
             cout << "Enter the locomotor's maximum speed in MPH: ";
@@ -294,10 +295,10 @@ public:
             cin >> locomotor_power;
             cout << "Enter the component's weight: ";
             cin >> temp1;
-            description = "Locomotor("+std::to_string(part_number)+") Info: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
+            description = "Locomotor("+std::to_string(part_number)+") Description: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
             weight = weight + temp1;
             cost = cost + temp2;
-            part_types = part_types + "," + description;
+            part_types = part_types + "" + description;
             cout << "\n";
     }
 
@@ -329,100 +330,100 @@ public:
             if (battery_amount == 3)
             {
                 battery++;
+                cout << "Enter Battery1's part number: ";
+                cin >> part_number;
                 cin.ignore();
                 cout << "Enter a description for Battery1: ";
                 getline (cin,temp);
-                cout << "Enter the component's part number: ";
-                cin >> part_number;
-                cout << "Enter the component's cost: ";
+                cout << "Enter Battery1's cost: ";
                 cin >> temp2;
-                cout << "Enter the component's weight: ";
+                cout << "Enter Battery1's weight: ";
                 cin >> temp1;
-                description = "Battery1("+std::to_string(part_number)+") Info: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
+                description = "Battery1("+std::to_string(part_number)+") Description: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
                 weight = weight + temp1;
                 cost = cost + temp2;
-                part_types = part_types + "," + description;
+                part_types = part_types + "" + description;
                 cout << "\n";
 
+                cout << "Enter Battery2's part number: ";
+                cin >> part_number;
                 cin.ignore();
                 cout << "Enter a description for Battery2: ";
                 getline (cin,temp);
-                cout << "Enter the component's part number: ";
-                cin >> part_number;
-                cout << "Enter the component's cost: ";
+                cout << "Enter Battery2's cost: ";
                 cin >> temp2;
-                cout << "Enter the component's weight: ";
+                cout << "Enter Battery2's weight: ";
                 cin >> temp1;             
-                description = "Battery2("+std::to_string(part_number)+") Info: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
+                description = "Battery2("+std::to_string(part_number)+") Description: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
                 weight = weight + temp1;
                 cost = cost + temp2;
-                part_types = part_types + "," + description;
+                part_types = part_types + "" + description;
                 cout << "\n";
 
+                cout << "Enter Battery3's part number: ";
+                cin >> part_number;
                 cin.ignore();
                 cout << "Enter a description for Battery3: ";
                 getline (cin,temp);
-                cout << "Enter the component's part number: ";
-                cin >> part_number;
-                cout << "Enter the component's cost: ";
+                cout << "Enter Battery3's cost: ";
                 cin >> temp2;
-                cout << "Enter the component's weight: ";
+                cout << "Enter Battery3's weight: ";
                 cin >> temp1;
-                description = "Battery1("+std::to_string(part_number)+") Info: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
+                description = "Battery3("+std::to_string(part_number)+") Description: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
                 weight = weight + temp1;
                 cost = cost + temp2;
-                part_types = part_types + "," + description;
+                part_types = part_types + "" + description;
                 cout << "\n";
             }
             if (battery_amount == 2)
             {
                 battery++;
+                cout << "Enter Battery1's part number: ";
+                cin >> part_number;
                 cin.ignore();
                 cout << "Enter a description for Battery1: ";
                 getline (cin,temp);
-                cout << "Enter the component's part number: ";
-                cin >> part_number;
-                cout << "Enter the component's cost: ";
+                cout << "Enter Battery1's cost: ";
                 cin >> temp2;
-                cout << "Enter the component's weight: ";
+                cout << "Enter Battery1's weight: ";
                 cin >> temp1;
-                description = "Battery1("+std::to_string(part_number)+") Info: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
+                description = "Battery1("+std::to_string(part_number)+") Description: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
                 weight = weight + temp1;
                 cost = cost + temp2;
-                part_types = part_types + "," + description;
+                part_types = part_types + "" + description;
                 cout << "\n";
 
+                cout << "Enter Battery2's part number: ";
+                cin >> part_number;
                 cin.ignore();
                 cout << "Enter a description for Battery2: ";
                 getline (cin,temp);
-                cout << "Enter the component's part number: ";
-                cin >> part_number;
-                cout << "Enter the component's cost: ";
+                cout << "Enter Battery2's cost: ";
                 cin >> temp2;
-                cout << "Enter the component's weight: ";
+                cout << "Enter Battery2's weight: ";
                 cin >> temp1;             
-                description = "Battery2("+std::to_string(part_number)+") Info: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
+                description = "Battery2("+std::to_string(part_number)+") Description: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
                 weight = weight + temp1;
                 cost = cost + temp2;
-                part_types = part_types + "," + description;
+                part_types = part_types + "" + description;
                 cout << "\n";
             }
             if (battery_amount == 1)
             {
                 battery++;
+                cout << "Enter the component's part number: ";
+                cin >> part_number;
                 cin.ignore();
                 cout << "Enter a description for the Battery: ";
                 getline (cin,temp);
-                cout << "Enter the component's part number: ";
-                cin >> part_number;
                 cout << "Enter the component's cost: ";
                 cin >> temp2;
                 cout << "Enter the component's weight: ";
                 cin >> temp1;
-                description = "Battery("+std::to_string(part_number)+") Info: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
+                description = "Battery("+std::to_string(part_number)+") Description: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
                 weight = weight + temp1;
                 cost = cost + temp2;
-                part_types = part_types + "," + description;
+                part_types = part_types + "" + description;
                 cout << "\n";
             }
     }
@@ -476,18 +477,22 @@ public:
 
   void execute_cmd()
   {
-    int cmd, cmd1;
+    int cmd, cmd1, j;
     int i = 1;
-    int j = 1;
+    count = 0;
 
     while(i != 0)
     {
+     j = 1;
      cout << "1)Create Robot Model\n2)Print Robot Model Parts\n0)Exit\nEnter a number the number that indicates what you are trying to do: ";
      cin >> cmd;
      cout << "\n";
 
      if(cmd == 1)
      {
+        cost = 0.0;
+        weight = 0.0;
+        part_types = "";
         while(j != 0)
         {
             component(j);
@@ -524,4 +529,3 @@ controller.execute_cmd();
 
 return 0;
 }
-
