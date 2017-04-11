@@ -13,112 +13,10 @@
 
 using namespace std;
 
-class Robot_parts 
-{
-  public:
-    Robot_parts(int p_count,
-                string p_part_name,
-                int p_part_number,
-                int p_model_number,
-                double p_weight,
-                double p_cost,
-                int p_battery_amount,
-                int p_battery_compartment,
-                double p_battery1_energy,
-                double p_battery2_energy,
-                double p_battery3_energy,
-                double p_locomotor_speed,
-                double p_locomotor_power,
-                double p_arm_power1,
-                double p_arm_power2,
-                string p_model_name,
-                string p_part_types,
-                double p_price,
-                string p_description) :
-
-                count(p_count),
-                part_name(p_part_name),
-                part_number(p_part_number),
-                model_number(p_model_number),
-                weight(p_weight),
-                cost(p_cost),
-                battery_amount(p_battery_amount),
-                battery_compartment(p_battery_compartment),
-                battery1_energy(p_battery1_energy),
-                battery2_energy(p_battery2_energy),
-                battery3_energy(p_battery3_energy),
-                locomotor_speed(p_locomotor_speed),
-                locomotor_power(p_locomotor_power),
-                arm_power1(p_arm_power1),
-                arm_power2(p_arm_power2),
-                model_name(p_model_name),
-                part_types(p_part_types),
-                price(p_price),
-                description(p_description) { }
-
-  protected:
-    int count;
-    string part_name;
-    int part_number;
-    int model_number;
-    string model_name;
-    double model_price;
-    string part_types;
-    double weight;
-    double cost;
-    double price;
-    string description;
-
-   private:
-    int battery_amount;
-    int battery_compartment;
-    double battery1_energy;
-    double battery2_energy;
-    double battery3_energy;
-    double locomotor_speed;
-    double locomotor_power;
-    double arm_power1;
-    double arm_power2;
-};
-
-
-class Shop 
-{
-  public:
-    void add_robot_model(Robot_parts robot)
-    {
-        robot_models.push_back(robot);
-    }
-
-
-    int number_of_models() 
-    {
-        return robot_models.size();
-    }
-
-
-  private:
-    vector<Robot_parts> robot_models;
-
-};
-
-
-
-class View 
-{
-  public:
-    View(Shop& s) : shop(s) { }
-
-  private:
-    Shop& shop;
-};
-
-
-
 class Controller
 {
 public:
-    int count;
+    int count, count1, count2;
     string part_types;
     int torso;
     int head;
@@ -127,8 +25,6 @@ public:
     int battery;
     double cost;
     double weight;
-
-  Controller (Shop& s, View& view) : shop(s), view(view) { }
 
   void print_model_info(int count)
     {
@@ -144,15 +40,109 @@ public:
 
         cout << "\nEnter the number corresponding to the model name to see its parts: ";
         cin >> j;
-        cout << robot_part_description[j] << endl;
-        //printf("%s\n", robot_part_description[j].c_str());
+        cout << "\n" << robot_part_description[j] << endl;
     }
+
+
+ void new_sa()
+ {
+    string name, emplo_num, temp;
+    cin.ignore();
+    cout << "Enter the the sales associate's name: ";
+    getline (cin, name);
+    cout << "Enter the the sales associate's employee number: ";
+    cin >> emplo_num;
+
+    temp = "Name: "+name+" Employee Number: "+emplo_num;
+    sale_associate.push_back(temp);
+    count1++;
+ }
+
+
+ void new_bc()
+ {
+    string name, cust_num, phone_num, email, temp;
+    cin.ignore();
+    cout << "Enter the the customers name: ";
+    getline (cin, name);
+    cout << "Enter the the customer number for this new customer: ";
+    cin >> cust_num;
+    cout << "Enter the customer's phone number: ";
+    cin >> phone_num;
+    cout << "Enter the customer's email: ";
+    cin >> email;
+
+    temp = "Name: "+name+" Customer Number: "+cust_num+" Phone: "+phone_num+" Email: "+email;
+    beloved_customer.push_back(temp);
+    count2++;
+ }
+
+ void print_sa(int count1)
+ {
+    int i=0;
+
+    while(i<count1)
+    {
+        cout << std::to_string(i) << ") " << sale_associate[i] << endl;
+        i++;
+    }
+ }
+
+ void print_bc(int count2)
+ {
+    int i=0;
+
+    while(i<count2)
+    {
+        cout << std::to_string(i) << ") " << beloved_customer[i] << endl;
+        i++;
+    }
+ }
+
+ void sell_robot(int count, int count2)
+ {
+    int h, j, k;
+    int i=0;
+    string temp;
+
+    cout << "\n\n";
+    print_sa(count1);
+    cout << "\nEnter the corresponding number to the sale's associate you are: ";
+    cin >> h;
+
+
+
+    while(i<count)
+    {
+        cout << std::to_string(i) << ") " << robot_model_name[i] << "\n" << robot_part_description[i] << "\n\n";
+        i++;
+    }
+
+    i = 0;
+
+    cout << "\nEnter the corresponding number to the model you are selling: ";
+    cin >> j;
+
+    while(i<count2)
+    {
+        cout << std::to_string(i) << ") " << beloved_customer[i] << endl;
+        i++;
+    }
+
+    cout << "\nEnter the corresponding number to the customer you are selling the model to: ";
+    cin >> k;
+
+    beloved_customer[k] = beloved_customer[k] + " Bought Robot Model: "+robot_model_name[j];
+
+ }
+
+
 
  void component(int& i)
  {
     int part_number, model_number, battery_amount, battery_compartment, type, j;
-    string model_name, description, part_name, temp;
-    double price, battery1_energy, battery2_energy, battery3_energy, locomotor_speed, locomotor_power, arm_power1, arm_power2, model_price, temp2, temp1;
+    string model_name, description, part_name, price, temp;
+    double battery1_energy, battery2_energy, battery3_energy, locomotor_speed, locomotor_power, arm_power1, arm_power2, model_price, temp2, temp1;
 
     torso = 0;
     head = 0;
@@ -452,25 +442,7 @@ public:
             robot_part_description.push_back(part_types);
             robot_model_name.push_back(model_name);
 
-            /*shop.add_robot_model(Robot_parts(count,
-                part_name,
-                part_number,
-                model_number,
-                weight,
-                cost,
-                battery_amount,
-                battery_compartment,
-                battery1_energy,
-                battery2_energy,
-                battery3_energy,
-                locomotor_speed,
-                locomotor_power,
-                arm_power1,
-                arm_power2,
-                model_name,
-                part_types,
-                price,
-                description));*/
+            robot_model_name[count-1] = robot_model_name[count-1] + " Price: $"+price;
             }    
  }
 
@@ -480,11 +452,13 @@ public:
     int cmd, cmd1, j;
     int i = 1;
     count = 0;
+    count1 = 0;
+    count2 = 0;
 
     while(i != 0)
     {
      j = 1;
-     cout << "1)Create Robot Model\n2)Print Robot Model Parts\n0)Exit\nEnter a number the number that indicates what you are trying to do: ";
+     cout << "\n\n\n1)Create Robot Model\n2)Print Robot Model Parts\n3)Beloved Customer Menu\n4)Sales Associate Menu\n0)Exit\nEnter a number the number that indicates what you are trying to do: ";
      cin >> cmd;
      cout << "\n";
 
@@ -502,6 +476,38 @@ public:
      {
         print_model_info(count);
      }
+     if(cmd == 3)
+     {
+        cout << "1)Create Beloved Customer\n2)Print Beloved Customer's\nEnter a number the number that indicates what you are trying to do: ";
+        cin >> cmd1;
+        if(cmd1 == 1)
+        {
+            new_bc();
+        }
+        if(cmd1 == 2)
+        {
+            cout << "\n\n------------------Beloved Customers------------------\n";
+            print_bc(count2);
+        }
+     }
+     if(cmd == 4)
+     {
+        cout << "1)Create Sales Associate\n2)Print Sales Associate's\n3)Sell Robot Model to Customer\nEnter a number the number that indicates what you are trying to do: ";
+        cin >> cmd1;
+        if(cmd1 == 1)
+        {
+            new_sa();
+        }
+        if(cmd1 == 2)
+        {
+            cout << "\n\n------------------Sale Associate's------------------\n";
+            print_sa(count1);
+        }
+        if(cmd1 == 3)
+        {
+            sell_robot(count, count2);
+        }
+     }
      if(cmd == 0)
      {
         i = 0;
@@ -510,10 +516,10 @@ public:
   }
 
   private:
-    Shop& shop;
-    View& view;
     vector<string> robot_part_description;
     vector<string> robot_model_name;
+    vector<string> beloved_customer;
+    vector<string> sale_associate;
 };
 
 
@@ -521,9 +527,7 @@ int main()
 {
 cout << "-------------------Welcome to the Robbie Robot Shop!-------------------\n\n";
 
-Shop shop;
-View view(shop);
-Controller controller(shop, view);
+Controller controller;
 
 controller.execute_cmd();
 
