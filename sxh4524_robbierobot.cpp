@@ -1,4 +1,10 @@
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////// Compile using command line "fltk-config --compile sxh4524_robbierobot.cpp" //////////
+//////////// Then use command line "./sxh4524_robbierobot" to run the application /////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
 #include <string>
+#include <sstream>
 #include <iostream>
 #include <vector>
 #include <exception>
@@ -6,6 +12,8 @@
 #include <stdlib.h> 
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
+#include <FL/Fl_Box.H>
+#include <FL/Fl_Input.H>
 #include <FL/Fl_Shared_Image.H>
 #include <FL/Fl_JPEG_Image.H>
 #include <FL/fl_ask.H>
@@ -30,17 +38,17 @@ public:
     {
         int j;
         int i=0;
-        string temp;
+        string temp, tempp;
 
         while(i<count)
         {
-            cout << std::to_string(i) << ") " << robot_model_name[i] << endl;
+            temp = temp + std::to_string(i) + ") " + robot_model_name[i] + "\n";
             i++;
         }
 
-        cout << "\nEnter the number corresponding to the model name to see its parts: ";
-        cin >> j;
-        cout << "\n" << robot_part_description[j] << endl;
+        tempp = fl_input("%s\nEnter the number corresponding to the model name to see its parts: ","", temp.c_str());
+        stringstream(tempp) >> j;
+        fl_message("%s\n",robot_part_description[j].c_str());
     }
 
 
@@ -141,7 +149,7 @@ public:
  void component(int& i)
  {
     int part_number, model_number, battery_amount, battery_compartment, type, j;
-    string model_name, description, part_name, price, temp;
+    string model_name, description, part_name, price, temp, tempp;
     double battery1_energy, battery2_energy, battery3_energy, locomotor_speed, locomotor_power, arm_power1, arm_power2, model_price, temp2, temp1;
 
     torso = 0;
@@ -150,169 +158,148 @@ public:
     locomotor = 0;
     battery = 0;
 
-    cout << "(1)Torso\n(2)Head\n(3)Arms\n(4)Locomotor\n(5)Battery\nEnter a number, 1 through 5, that indicates the part you are adding: ";
-    cin >> type;
-    cin.ignore();
-    cout << "Enter a name for the component: ";
-    getline (cin,part_name);
-
+    tempp = fl_input("(1)Torso\n(2)Head\n(3)Arms\n(4)Locomotor\n(5)Battery\nEnter a number, 1 through 5, that indicates the part you are adding: ");
+    stringstream(tempp) >> type;
+    part_name = fl_input("Enter a name for the component: ");
 
     if (type == 1)
     {
             torso++;
-            cout << "Enter the component's part number: ";
-            cin >> part_number;
-            cin.ignore();
-            cout << "Enter a description for this component: ";
-            getline (cin,temp);
-            cout << "Enter the component's cost: ";
-            cin >> temp2;
-            cout << "Enter, from 1 to 3, how many battery compartments this torso has: ";
-            cin >> battery_compartment;
-            cout << "Enter the components weight: ";
-            cin >> temp1;
+            tempp = fl_input("Enter the component's part number: ");
+            stringstream(tempp) >> part_number;
+            temp = fl_input("Enter a description for this component: ");
+            tempp = fl_input("Enter the component's cost: ");
+            stringstream(tempp) >> temp2;
+            tempp = fl_input("Enter, from 1 to 3, how many battery compartments this torso has: ");
+            stringstream(tempp) >> battery_compartment;
+            tempp = fl_input("Enter the components weight: ");
+            stringstream(tempp) >> temp1;
             description = "Torso("+std::to_string(part_number)+") Description: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
             part_types = part_types + "" + description;
             weight = weight + temp1;
             cost = cost + temp2;
-            cout << "\n";
     }
     
 
     if (type == 2)
     {
             head++;
-            cout << "Enter the component's part number: ";
-            cin >> part_number;
-            cin.ignore();
-            cout << "Enter a description for this component: ";
-            getline (cin,temp);
-            cout << "Enter the components weight: ";
-            cin >> temp1;
-            cout << "Enter the component's cost: ";
-            cin >> temp2;
+            tempp = fl_input("Enter the component's part number: ");
+            stringstream(tempp) >> part_number;
+            temp = fl_input("Enter a description for this component: ");
+            tempp = fl_input("Enter the components weight: ");
+            stringstream(tempp) >> temp1;
+            tempp = fl_input("Enter the component's cost: ");
+            stringstream(tempp) >> temp2;
             description = "Head("+std::to_string(part_number)+") Description: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
             weight = weight + temp1;
             cost = cost + temp2;
             part_types = part_types + "" + description;
-            cout << "\n";
     }
 
     if (type == 3)
     {
         int a;
-        cout << "How many, from 1 to 2, arms are there: ";
+        tempp = fl_input("How many, from 1 to 2, arms are there: ");
+        stringstream(tempp) >> a;
         cin >> a;
 
             if (a == 2)
             {
                 arm++;           
-                cout << "Enter Arm1's part number: ";
-                cin >> part_number;
-                cin.ignore();
-                cout << "Enter a description for Arm1: ";
-                getline (cin,temp);
-                cout << "Enter the component's cost: ";
-                cin >> temp2;
-                cout << "Enter Arm1's power consumption in watts: ";
-                cin >> arm_power1;
-                cout << "Enter Arm1's weight: ";
-                cin >> temp1;
+                tempp = fl_input("Enter Arm1's part number: ");
+                stringstream(tempp) >> part_number;
+                temp = fl_input("Enter a description for Arm1: ");
+                tempp = fl_input("Enter the component's cost: ");
+                stringstream(tempp) >> temp2;
+                tempp = fl_input("Enter Arm1's power consumption in watts: ");
+                stringstream(tempp) >> arm_power1;
+                tempp = fl_input("Enter Arm1's weight: ");
+                stringstream(tempp) >> temp1;
                 description = "Arm1("+std::to_string(part_number)+") Description: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
                 weight = weight + temp1;
                 cost = cost + temp2;
                 part_types = part_types + "" + description;
-                cout << "\n";
 
 
-                cout << "Enter Arm2's part number: ";
-                cin >> part_number;
-                cin.ignore();
-                cout << "Enter a description for Arm2: ";
-                getline (cin,temp);
-                cout << "Enter the component's cost: ";
-                cin >> temp1;
-                cost = cost + temp1;
-                cout << "Enter Arm2's power consumption in watts: ";
-                cin >> arm_power1;
-                cout << "Enter Arm2's weight: ";
-                cin >> temp1;
-                weight = weight + temp1;
+                tempp = fl_input("Enter Arm2's part number: ");
+                stringstream(tempp) >> part_number;
+                temp = fl_input("Enter a description for Arm2: ");
+                tempp = fl_input("Enter the component's cost: ");
+                stringstream(tempp) >> temp2;
+                tempp = fl_input("Enter Arm2's power consumption in watts: ");
+                stringstream(tempp) >> arm_power1;
+                tempp = fl_input("Enter Arm2's weight: ");
+                stringstream(tempp) >> temp1;
                 description = "Arm2("+std::to_string(part_number)+") Description: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
                 weight = weight + temp1;
                 cost = cost + temp2;
                 part_types = part_types + "" + description;
-                cout << "\n";
             }
 
             if (a == 1)
             {
                 arm++;
-                cout << "Enter the Arm's part number: ";
-                cin >> part_number;
-                cin.ignore();
-                cout << "Enter a description for this Arm: ";
-                getline (cin,temp);
-                cout << "Enter the component's cost: ";
-                cin >> temp1;
-                cost = cost + temp1;
-                cout << "Enter the Arm's power consumption in watts: ";
-                cin >> arm_power1;
-                cout << "Enter the Arm's weight: ";
-                cin >> temp1;
-                weight = weight + temp1;
+                tempp = fl_input("Enter the Arm's part number: ");
+                stringstream(tempp) >> part_number;
+                temp = fl_input("Enter a description for the Arm: ");
+                tempp = fl_input("Enter the Arm's cost: ");
+                stringstream(tempp) >> temp2;
+                tempp = fl_input("Enter the Arm's power consumption in watts: ");
+                stringstream(tempp) >> arm_power1;
+                tempp = fl_input("Enter the Arm's weight: ");
+                stringstream(tempp) >> temp1;
                 description = "Arm("+std::to_string(part_number)+") Description: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
                 weight = weight + temp1;
                 cost = cost + temp2;
                 part_types = part_types + "" + description;
-                cout << "\n";
             }
     }
 
     if (type == 4)
     {
             locomotor++;
-            cout << "Enter the component's part number: ";
-            cin >> part_number;
-            cin.ignore();
-            cout << "Enter a description for this component: ";
-            getline (cin,temp);
-            cout << "Enter the component's cost: ";
-            cin >> temp2;
-            cout << "Enter the locomotor's maximum speed in MPH: ";
-            cin >> locomotor_speed;
-            cout << "Enter the locomotor's power consumption in watts: ";
-            cin >> locomotor_power;
-            cout << "Enter the component's weight: ";
-            cin >> temp1;
+            tempp = fl_input("Enter the component's part number: ");
+            stringstream(tempp) >> part_number;
+            temp = fl_input("Enter a description for this component: ");
+            tempp = fl_input("Enter the component's cost: ");
+            stringstream(tempp) >> temp2;
+            tempp = fl_input("Enter the locomotor's maximum speed in MPH: ");
+            stringstream(tempp) >> locomotor_speed;
+            tempp = fl_input("Enter the locomotor's power consumption in watts: ");
+            stringstream(tempp) >> locomotor_power;
+            tempp = fl_input("Enter the components weight: ");
+            stringstream(tempp) >> temp1;
             description = "Locomotor("+std::to_string(part_number)+") Description: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
             weight = weight + temp1;
             cost = cost + temp2;
             part_types = part_types + "" + description;
-            cout << "\n";
     }
 
     if (type == 5)
     {
 
-            cout << "Enter how many, from 1 to 3, batteries there are: ";
-            cin >> battery_amount;
+            tempp = fl_input("Enter how many, from 1 to 3, batteries there are: ");
+            stringstream(tempp) >> battery_amount;
             j=0;
 
         while(j < battery_amount)
         {   
-            cout << "Enter the energy, in kilowatt hours, of battery " << j+1 << ": ";
             if (j == 0)
             {
-                cin >> battery1_energy;
+                tempp = fl_input("Enter the energy, in kilowatt hours, of battery 1: ");
+                stringstream(tempp) >> battery1_energy;
+
             }
             if (j == 1 && battery_amount >= 1)
             {
-                cin >> battery2_energy;
+                tempp = fl_input("Enter the energy, in kilowatt hours, of battery 2: ");
+                stringstream(tempp) >> battery1_energy;
             }
             if (j == 2)
             {
-                cin >> battery3_energy;
+                tempp = fl_input("Enter the energy, in kilowatt hours, of battery 3: ");
+                stringstream(tempp) >> battery1_energy;
             }
             j++;
         }
@@ -320,123 +307,99 @@ public:
             if (battery_amount == 3)
             {
                 battery++;
-                cout << "Enter Battery1's part number: ";
-                cin >> part_number;
-                cin.ignore();
-                cout << "Enter a description for Battery1: ";
-                getline (cin,temp);
-                cout << "Enter Battery1's cost: ";
-                cin >> temp2;
-                cout << "Enter Battery1's weight: ";
-                cin >> temp1;
+                tempp = fl_input("Enter Battery1's part number: ");
+                stringstream(tempp) >> part_number;
+                temp = fl_input("Enter a description for Battery1: ");
+                tempp = fl_input("Enter Battery1's cost: ");
+                stringstream(tempp) >> temp2;
+                tempp = fl_input("Enter Battery1's weight: ");
+                stringstream(tempp) >> temp1;
                 description = "Battery1("+std::to_string(part_number)+") Description: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
                 weight = weight + temp1;
                 cost = cost + temp2;
                 part_types = part_types + "" + description;
-                cout << "\n";
 
-                cout << "Enter Battery2's part number: ";
-                cin >> part_number;
-                cin.ignore();
-                cout << "Enter a description for Battery2: ";
-                getline (cin,temp);
-                cout << "Enter Battery2's cost: ";
-                cin >> temp2;
-                cout << "Enter Battery2's weight: ";
-                cin >> temp1;             
+                tempp = fl_input("Enter Battery2's part number: ");
+                stringstream(tempp) >> part_number;
+                temp = fl_input("Enter a description for Battery2: ");
+                tempp = fl_input("Enter Battery2's cost: ");
+                stringstream(tempp) >> temp2;
+                tempp = fl_input("Enter Battery2's weight: ");
+                stringstream(tempp) >> temp1;
                 description = "Battery2("+std::to_string(part_number)+") Description: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
                 weight = weight + temp1;
                 cost = cost + temp2;
                 part_types = part_types + "" + description;
-                cout << "\n";
 
-                cout << "Enter Battery3's part number: ";
-                cin >> part_number;
-                cin.ignore();
-                cout << "Enter a description for Battery3: ";
-                getline (cin,temp);
-                cout << "Enter Battery3's cost: ";
-                cin >> temp2;
-                cout << "Enter Battery3's weight: ";
-                cin >> temp1;
+                tempp = fl_input("Enter Battery3's part number: ");
+                stringstream(tempp) >> part_number;
+                temp = fl_input("Enter a description for Battery3: ");
+                tempp = fl_input("Enter Battery3's cost: ");
+                stringstream(tempp) >> temp2;
+                tempp = fl_input("Enter Battery3's weight: ");
+                stringstream(tempp) >> temp1;
                 description = "Battery3("+std::to_string(part_number)+") Description: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
                 weight = weight + temp1;
                 cost = cost + temp2;
                 part_types = part_types + "" + description;
-                cout << "\n";
             }
             if (battery_amount == 2)
             {
                 battery++;
-                cout << "Enter Battery1's part number: ";
-                cin >> part_number;
-                cin.ignore();
-                cout << "Enter a description for Battery1: ";
-                getline (cin,temp);
-                cout << "Enter Battery1's cost: ";
-                cin >> temp2;
-                cout << "Enter Battery1's weight: ";
-                cin >> temp1;
+                tempp = fl_input("Enter Battery1's part number: ");
+                stringstream(tempp) >> part_number;
+                temp = fl_input("Enter a description for Battery1: ");
+                tempp = fl_input("Enter Battery1's cost: ");
+                stringstream(tempp) >> temp2;
+                tempp = fl_input("Enter Battery1's weight: ");
+                stringstream(tempp) >> temp1;
                 description = "Battery1("+std::to_string(part_number)+") Description: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
                 weight = weight + temp1;
                 cost = cost + temp2;
                 part_types = part_types + "" + description;
-                cout << "\n";
 
-                cout << "Enter Battery2's part number: ";
-                cin >> part_number;
-                cin.ignore();
-                cout << "Enter a description for Battery2: ";
-                getline (cin,temp);
-                cout << "Enter Battery2's cost: ";
-                cin >> temp2;
-                cout << "Enter Battery2's weight: ";
-                cin >> temp1;             
+                tempp = fl_input("Enter Battery2's part number: ");
+                stringstream(tempp) >> part_number;
+                temp = fl_input("Enter a description for Battery2: ");
+                tempp = fl_input("Enter Battery2's cost: ");
+                stringstream(tempp) >> temp2;
+                tempp = fl_input("Enter Battery2's weight: ");
+                stringstream(tempp) >> temp1;
                 description = "Battery2("+std::to_string(part_number)+") Description: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
                 weight = weight + temp1;
                 cost = cost + temp2;
                 part_types = part_types + "" + description;
-                cout << "\n";
             }
             if (battery_amount == 1)
             {
                 battery++;
-                cout << "Enter the component's part number: ";
-                cin >> part_number;
-                cin.ignore();
-                cout << "Enter a description for the Battery: ";
-                getline (cin,temp);
-                cout << "Enter the component's cost: ";
-                cin >> temp2;
-                cout << "Enter the component's weight: ";
-                cin >> temp1;
+                tempp = fl_input("Enter the component's part number: ");
+                stringstream(tempp) >> part_number;
+                temp = fl_input("Enter a description for the Battery: ");
+                tempp = fl_input("Enter the component's cost: ");
+                stringstream(tempp) >> temp2;
+                tempp = fl_input("Enter the component's weight: ");
+                stringstream(tempp) >> temp1;
                 description = "Battery("+std::to_string(part_number)+") Description: "+temp+ " Weight: "+std::to_string(temp1)+" Cost: $"+std::to_string(temp2)+"\n";
                 weight = weight + temp1;
                 cost = cost + temp2;
                 part_types = part_types + "" + description;
-                cout << "\n";
             }
     }
     
 
-           cout << "Enter (0) if you are done with this model or enter (1) if you need to add another component: ";
-           cin >> i;
-           cout << "\n";
+           tempp = fl_input("Enter (0) if you are done with this model or enter (1) if you need to add another component: ");
+           stringstream(tempp) >> i;
 
             if (i == 0)
             {
-            cin.ignore();
-            cout << "Enter this model's name: ";
-            getline (cin,model_name);
-            cout << "\n";
+            model_name = fl_input("Enter this model's name: ");
 
-            cout << "Enter this model's number: ";
-            cin >> model_number;
-            cout << "\n";
+            tempp = fl_input("Enter this model's number: ");
+            stringstream(tempp) >> model_number;
 
-            cout << "The current cost of this model is $" << cost << ". Enter this model's price: ";
-            cin >> price;
-            cout << "\n";
+            //price = fl_input("The current cost of this model is $"+std::to_string(cost)+". Enter this model's price: ");
+            price = fl_input("The current cost of this model is $%f. Enter this model's price: ","",cost);
 
             count++;
             robot_part_description.push_back(part_types);
@@ -449,6 +412,7 @@ public:
 
   void execute_cmd()
   {
+    string temp;
     int cmd, cmd1, j;
     int i = 1;
     count = 0;
@@ -458,9 +422,11 @@ public:
     while(i != 0)
     {
      j = 1;
-     cout << "\n\n\n1)Create Robot Model\n2)Print Robot Model Parts\n3)Beloved Customer Menu\n4)Sales Associate Menu\n0)Exit\nEnter a number the number that indicates what you are trying to do: ";
-     cin >> cmd;
-     cout << "\n";
+     //temp = fl_input("1)Create Robot Model\n2)Print Robot Model Parts\n3)Beloved Customer Menu\n4)Sales Associate Menu\n0)Exit\nEnter a number the number that indicates what you are trying to do: ");
+     //stringstream(temp) >> cmd;
+     temp = fl_input("1)Create Robot Model\n2)Print Robot Model Parts\n0)Exit\nEnter a number the number that indicates what you are trying to do: ");
+     stringstream(temp) >> cmd;
+
 
      if(cmd == 1)
      {
@@ -476,10 +442,10 @@ public:
      {
         print_model_info(count);
      }
-     if(cmd == 3)
+     /*if(cmd == 3)
      {
-        cout << "1)Create Beloved Customer\n2)Print Beloved Customer's\nEnter a number the number that indicates what you are trying to do: ";
-        cin >> cmd1;
+        temp = fl_input("1)Create Beloved Customer\n2)Print Beloved Customer's\nEnter a number the number that indicates what you are trying to do: ");
+        stringstream(temp) >> cmd1;
         if(cmd1 == 1)
         {
             new_bc();
@@ -492,8 +458,8 @@ public:
      }
      if(cmd == 4)
      {
-        cout << "1)Create Sales Associate\n2)Print Sales Associate's\n3)Sell Robot Model to Customer\nEnter a number the number that indicates what you are trying to do: ";
-        cin >> cmd1;
+        temp = fl_input("1)Create Sales Associate\n2)Print Sales Associate's\n3)Sell Robot Model to Customer\nEnter a number the number that indicates what you are trying to do: ");
+        stringstream(temp) >> cmd1;
         if(cmd1 == 1)
         {
             new_sa();
@@ -507,7 +473,7 @@ public:
         {
             sell_robot(count, count2);
         }
-     }
+     }*/
      if(cmd == 0)
      {
         i = 0;
