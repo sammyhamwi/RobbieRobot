@@ -467,13 +467,12 @@ public:
         {
             sell_robot(count, count1, count2);
         }
-     }
      if(cmd == 0)
      {
         i = 0;
      }
-
     }
+}
 
   private:
     vector<string> robot_part_description;
