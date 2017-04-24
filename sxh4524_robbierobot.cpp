@@ -26,6 +26,7 @@ class Controller
 public:
     int count, count1, count2;
     string part_types;
+    string info;
     int torso;
     int head;
     int arm;
@@ -38,15 +39,16 @@ public:
     {
         int j;
         int i=0;
-        string temp, tempp;
+        string tempp;
+        info = "";
 
         while(i<count)
         {
-            temp = temp + std::to_string(i) + ") " + robot_model_name[i] + "\n";
+            info = info + std::to_string(i) + ") " + robot_model_name[i] + "\n";
             i++;
         }
 
-        tempp = fl_input("%s\nEnter the number corresponding to the model name to see its parts: ","", temp.c_str());
+        tempp = fl_input("%s\nEnter the number corresponding to the model name to see its parts: ","", info.c_str());
         stringstream(tempp) >> j;
         fl_message("%s\n",robot_part_description[j].c_str());
     }
@@ -54,14 +56,13 @@ public:
 
  void new_sa()
  {
-    string name, emplo_num, temp;
-    cin.ignore();
-    cout << "Enter the the sales associate's name: ";
-    getline (cin, name);
-    cout << "Enter the the sales associate's employee number: ";
-    cin >> emplo_num;
+    string name, emplo_num, temp,temp1;
+    name = fl_input("Enter the the sales associate's name: ");
+    emplo_num = fl_input("Enter the the sales associate's employee number: ");
 
-    temp = "Name: "+name+" Employee Number: "+emplo_num;
+    temp1 = name;
+    temp = "NAME:"+name+" EMPLOYEE NUMBER:"+emplo_num;
+    sale_associate_name.push_back(temp1);
     sale_associate.push_back(temp);
     count1++;
  }
@@ -70,77 +71,75 @@ public:
  void new_bc()
  {
     string name, cust_num, phone_num, email, temp;
-    cin.ignore();
-    cout << "Enter the the customers name: ";
-    getline (cin, name);
-    cout << "Enter the the customer number for this new customer: ";
-    cin >> cust_num;
-    cout << "Enter the customer's phone number: ";
-    cin >> phone_num;
-    cout << "Enter the customer's email: ";
-    cin >> email;
 
-    temp = "Name: "+name+" Customer Number: "+cust_num+" Phone: "+phone_num+" Email: "+email;
+    name = fl_input("Enter the the customers name: ");
+    cust_num = fl_input("Enter the the customer number for this new customer: ");
+    phone_num = fl_input("Enter the customer's phone number: ");
+    email = fl_input("Enter the customer's email: ");
+
+    temp = "NAME:"+name+" CUSTOMER NUMBER:"+cust_num+" PHONE:"+phone_num+" EMAIL:"+email;
     beloved_customer.push_back(temp);
     count2++;
  }
 
  void print_sa(int count1)
  {
+    string temp = "------------------Sale Associates------------------\n";
     int i=0;
 
     while(i<count1)
     {
-        cout << std::to_string(i) << ") " << sale_associate[i] << endl;
+        temp = temp + std::to_string(i)+") "+sale_associate[i]+"\n";
         i++;
     }
+    fl_message("%s",temp.c_str());
  }
 
  void print_bc(int count2)
  {
+    string temp = "------------------Beloved Customers------------------\n";
     int i=0;
 
     while(i<count2)
     {
-        cout << std::to_string(i) << ") " << beloved_customer[i] << endl;
+        temp = temp + std::to_string(i)+") "+beloved_customer[i]+"\n";
         i++;
     }
+
+    fl_message("%s",temp.c_str());
  }
 
- void sell_robot(int count, int count2)
+ void sell_robot(int count, int count1, int count2)
  {
     int h, j, k;
     int i=0;
-    string temp;
+    string temp1, temp2, temp3, tempp;
 
-    cout << "\n\n";
-    print_sa(count1);
-    cout << "\nEnter the corresponding number to the sale's associate you are: ";
-    cin >> h;
-
-
-
-    while(i<count)
+     while(i<count1)
     {
-        cout << std::to_string(i) << ") " << robot_model_name[i] << "\n" << robot_part_description[i] << "\n\n";
+        temp1 = temp1 + std::to_string(i)+") "+sale_associate[i]+"\n";
         i++;
     }
+
+    tempp = fl_input("%sEnter the corresponding number to the sale's associate you are: ","",temp1.c_str());
+    stringstream(tempp) >> h;
+
+    tempp = fl_input("%sEnter the corresponding number to the model you are selling: ","",info.c_str());
+    stringstream(tempp) >> j;
 
     i = 0;
-
-    cout << "\nEnter the corresponding number to the model you are selling: ";
-    cin >> j;
-
     while(i<count2)
     {
-        cout << std::to_string(i) << ") " << beloved_customer[i] << endl;
+        temp3 = temp3 + std::to_string(i)+") "+beloved_customer[i]+"\n";
         i++;
     }
 
-    cout << "\nEnter the corresponding number to the customer you are selling the model to: ";
-    cin >> k;
+    tempp = fl_input("%sEnter the corresponding number to the customer you are selling the model to: ","",temp3.c_str());
+    stringstream(tempp) >> k;
 
-    beloved_customer[k] = beloved_customer[k] + " Bought Robot Model: "+robot_model_name[j];
+    beloved_customer[k] = beloved_customer[k] + "\nBOUGHT ROBOT MODEL:"+robot_model_name[j]+" THROUGH EMPLOYEE:"+sale_associate_name[h];
+
+    fl_message("MODEL SOLD: %s  SOLD BY ASSOCIATE: %s", robot_model_name[j].c_str(), sale_associate_name[h].c_str());
 
  }
 
@@ -422,11 +421,8 @@ public:
     while(i != 0)
     {
      j = 1;
-     //temp = fl_input("1)Create Robot Model\n2)Print Robot Model Parts\n3)Beloved Customer Menu\n4)Sales Associate Menu\n0)Exit\nEnter a number the number that indicates what you are trying to do: ");
-     //stringstream(temp) >> cmd;
-     temp = fl_input("1)Create Robot Model\n2)Print Robot Model Parts\n0)Exit\nEnter a number the number that indicates what you are trying to do: ");
+     temp = fl_input("1)Create Robot Model\n2)Print Robot Model Parts\n3)Beloved Customer Menu\n4)Sales Associate Menu\n0)Exit\nEnter a number the number that indicates what you are trying to do: ");
      stringstream(temp) >> cmd;
-
 
      if(cmd == 1)
      {
@@ -442,7 +438,7 @@ public:
      {
         print_model_info(count);
      }
-     /*if(cmd == 3)
+     if(cmd == 3)
      {
         temp = fl_input("1)Create Beloved Customer\n2)Print Beloved Customer's\nEnter a number the number that indicates what you are trying to do: ");
         stringstream(temp) >> cmd1;
@@ -452,7 +448,6 @@ public:
         }
         if(cmd1 == 2)
         {
-            cout << "\n\n------------------Beloved Customers------------------\n";
             print_bc(count2);
         }
      }
@@ -465,34 +460,32 @@ public:
             new_sa();
         }
         if(cmd1 == 2)
-        {
-            cout << "\n\n------------------Sale Associate's------------------\n";
+        
             print_sa(count1);
         }
         if(cmd1 == 3)
         {
-            sell_robot(count, count2);
+            sell_robot(count, count1, count2);
         }
-     }*/
+     }
      if(cmd == 0)
      {
         i = 0;
      }
+
     }
-  }
 
   private:
     vector<string> robot_part_description;
     vector<string> robot_model_name;
     vector<string> beloved_customer;
     vector<string> sale_associate;
+    vector<string> sale_associate_name;
 };
 
 
 int main() 
 {
-cout << "-------------------Welcome to the Robbie Robot Shop!-------------------\n\n";
-
 Controller controller;
 
 controller.execute_cmd();
