@@ -21,6 +21,8 @@
 
 using namespace std;
 
+int cmd;
+
 class Controller
 {
 public:
@@ -409,69 +411,44 @@ public:
  }
 
 
-  void execute_cmd()
+  void execute_cmd(int cmd)
   {
-    string temp;
-    int cmd, cmd1, j;
-    int i = 1;
-    count = 0;
-    count1 = 0;
-    count2 = 0;
+    int j;
 
-    while(i != 0)
-    {
      j = 1;
-     temp = fl_input("1)Create Robot Model\n2)Print Robot Model Parts\n3)Beloved Customer Menu\n4)Sales Associate Menu\n0)Exit\nEnter a number the number that indicates what you are trying to do: ");
-     stringstream(temp) >> cmd;
 
      if(cmd == 1)
      {
-        cost = 0.0;
-        weight = 0.0;
-        part_types = "";
+        new_bc();
+     }
+     if(cmd == 2)
+     {
+        print_bc(count2);
+     }
+     if(cmd == 3)
+     {
+        new_sa();
+     }
+     if(cmd == 4)
+     {
+        print_sa(count1);
+     }
+     if(cmd == 5)
+     {
+        sell_robot(count, count1, count2);
+     }
+     if(cmd == 6)
+     {
         while(j != 0)
         {
             component(j);
         }
      }
-     if(cmd == 2)
+     if(cmd == 7)
      {
-        print_model_info(count);
+       print_model_info(count);
      }
-     if(cmd == 3)
-     {
-        temp = fl_input("1)Create Beloved Customer\n2)Print Beloved Customer's\nEnter a number the number that indicates what you are trying to do: ");
-        stringstream(temp) >> cmd1;
-        if(cmd1 == 1)
-        {
-            new_bc();
-        }
-        if(cmd1 == 2)
-        {
-            print_bc(count2);
-        }
-     }
-     if(cmd == 4)
-     {
-        temp = fl_input("1)Create Sales Associate\n2)Print Sales Associate's\n3)Sell Robot Model to Customer\nEnter a number the number that indicates what you are trying to do: ");
-        stringstream(temp) >> cmd1;
-        if(cmd1 == 1)
-        {
-            new_sa();
-        }
-        if(cmd1 == 2)
-        
-            print_sa(count1);
-        }
-        if(cmd1 == 3)
-        {
-            sell_robot(count, count1, count2);
-        }
-     if(cmd == 0)
-     {
-        i = 0;
-     }
-    }
+    
 }
 
   private:
@@ -482,12 +459,87 @@ public:
     vector<string> sale_associate_name;
 };
 
+Controller controller;
+
+static void MyMenuCallback(Fl_Widget *w, void *) 
+{
+  Fl_Menu_Bar *bar = (Fl_Menu_Bar*)w;     
+  const Fl_Menu_Item *item = bar->mvalue(); 
+
+
+  if ( strcmp(item->label(), "&Quit") == 0 ) 
+  {
+    exit(0);
+  }
+
+  if ( strcmp(item->label(), "&Add Beloved Customer") == 0 )
+  {
+    cmd = 1;
+  }
+
+  if ( strcmp(item->label(), "&List Beloved Customers") == 0 )
+  {
+    cmd = 2;
+  }
+
+  if ( strcmp(item->label(), "&Add Sale Associate") == 0 )
+  {
+    cmd = 3;
+  }
+
+  if ( strcmp(item->label(), "&List Sale Associates") == 0 )
+  {
+    cmd = 4;
+  }
+
+  if ( strcmp(item->label(), "&Sell Robot Model") == 0 )
+  {
+    cmd = 5;
+  }
+  if ( strcmp(item->label(), "&Add New Robot Model") == 0 )
+  {
+    cmd = 6;
+  }
+
+  if ( strcmp(item->label(), "&List Robot Models") == 0 )
+  {
+    cmd = 7;
+  }
+
+  controller.execute_cmd(cmd);
+
+}
+
+void toolbar()
+{
+  Fl::scheme("gtk+");
+  Fl_Window *win = new Fl_Window(400,200, "Sammy's Robot Shop");  
+  Fl_Menu_Bar *menuu = new Fl_Menu_Bar(0,0,400,25);    
+  menuu->add("&File/&Quit",  0, MyMenuCallback);
+  menuu->add("&Robot/&Add New Robot Model",  0, MyMenuCallback);
+  menuu->add("&Robot/&List Robot Models",  0, MyMenuCallback);
+  menuu->add("&Beloved Customer/&Add Beloved Customer",  0, MyMenuCallback);
+  menuu->add("&Beloved Customer/&List Beloved Customers",  0, MyMenuCallback);
+  menuu->add("&Sales Associate/&Add Sale Associate",  0, MyMenuCallback);
+  menuu->add("&Sales Associate/&List Sale Associates",  0, MyMenuCallback);
+  menuu->add("&Sell/&Sell Robot Model",  0, MyMenuCallback);
+
+  win->end();
+  win->show();
+}
 
 int main() 
 {
-Controller controller;
+controller.count = 0;
+controller.count1 = 0;
+controller.count2 = 0;
+controller.cost = 0.0;
+controller.weight = 0.0;
+controller.part_types = "";
 
-controller.execute_cmd();
+toolbar();
+
+return(Fl::run());
 
 return 0;
 }
