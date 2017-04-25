@@ -203,7 +203,6 @@ public:
         int a;
         tempp = fl_input("How many, from 1 to 2, arms are there: ");
         stringstream(tempp) >> a;
-        cin >> a;
 
             if (a == 2)
             {
